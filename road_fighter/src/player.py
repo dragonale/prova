@@ -30,12 +30,14 @@ class Player(pygame.sprite.Sprite):
         # Estraiamo un'immagine specifica dal foglio di sprite
         # Usiamo .subsurface(pygame.Rect(x, y, larghezza, altezza))
         # Le coordinate (x, y) sono il punto in alto a sinistra dell'immagine desiderata
-        # Queste coordinate sono state trovate per tentativi ed errori per isolare un'auto rossa
-        car_image_rect = pygame.Rect(130, 700, 150, 250)
+        # Queste coordinate sono state trovate ispezionando l'immagine per isolare un'auto blu
+        car_image_rect = pygame.Rect(40, 30, 420, 200)
         self.image_original = self.spritesheet.subsurface(car_image_rect)
 
         # Scaliamo l'immagine estratta alle dimensioni del nostro giocatore
         self.image = pygame.transform.scale(self.image_original, (PLAYER_WIDTH, PLAYER_HEIGHT))
+        # Ruotiamo l'immagine per farla puntare verso l'alto
+        self.image = pygame.transform.rotate(self.image, 90)
 
         # --- Posizione e Rettangolo ("Hitbox") ---
         self.rect = self.image.get_rect()
