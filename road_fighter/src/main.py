@@ -1,67 +1,64 @@
 import pygame
 from player import Player
 
-# Inizializza Pygame
-pygame.init()
-
-# Dimensioni dello schermo
+# --- Costanti e Impostazioni ---
+# Dimensioni della finestra
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
+# Fotogrammi al secondo (FPS)
+FPS = 60
+# Velocità del giocatore
+PLAYER_SPEED = 5
 
 # Colori
-GREY = (100, 100, 100)
+ROAD_COLOR = (100, 100, 100)
 
-# Crea lo schermo
+# --- Inizializzazione ---
+pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-# Titolo della finestra
 pygame.display.set_caption("Road Fighter")
+clock = pygame.time.Clock() # Oggetto Clock per il controllo degli FPS
 
-# === Creazione degli Sprite ===
-# Un gruppo per contenere tutti gli sprite (oggetti di gioco)
+# --- Creazione degli Sprite ---
 all_sprites = pygame.sprite.Group()
-
-# Creiamo il giocatore
 player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
-# Aggiungiamo il giocatore al gruppo di sprite
 all_sprites.add(player)
 
-
-# Game Loop
+# === Game Loop Principale ===
 running = True
 while running:
-    # Gestione degli eventi (input)
+    # Controlla il framerate per far girare il gioco alla stessa velocità su ogni computer
+    clock.tick(FPS)
+
+    # --- Gestione degli Eventi (Input) ---
     for event in pygame.event.get():
-        # Controlla se l'utente ha chiuso la finestra
+        # L'utente ha chiuso la finestra
         if event.type == pygame.QUIT:
             running = False
 
-        # Controlla se un tasto è stato PREMUTO
+        # Un tasto è stato PREMUTO
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player.speed_x = -5 # Muovi a sinistra
+                player.speed_x = -PLAYER_SPEED # Usa la costante
             if event.key == pygame.K_RIGHT:
-                player.speed_x = 5  # Muovi a destra
+                player.speed_x = PLAYER_SPEED  # Usa la costante
 
-        # Controlla se un tasto è stato RILASCIATO
+        # Un tasto è stato RILASCIATO
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT and player.speed_x < 0:
-                player.speed_x = 0 # Ferma il movimento
+                player.speed_x = 0
             if event.key == pygame.K_RIGHT and player.speed_x > 0:
-                player.speed_x = 0 # Ferma il movimento
+                player.speed_x = 0
 
-    # === Aggiornamento ===
-    # Chiama il metodo update() su tutti gli sprite nel gruppo
+    # --- Aggiornamento Logica di Gioco ---
     all_sprites.update()
 
-    # === Disegno ===
-    # Riempi lo schermo con il colore della strada
-    screen.fill(GREY)
-    # Disegna tutti gli sprite contenuti nel gruppo sullo schermo
+    # --- Disegno su Schermo ---
+    screen.fill(ROAD_COLOR)
     all_sprites.draw(screen)
 
     # Aggiorna la visualizzazione
     pygame.display.flip()
 
-# Esci da Pygame
+# --- Uscita dal Gioco ---
 pygame.quit()

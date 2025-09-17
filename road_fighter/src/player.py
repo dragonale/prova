@@ -1,7 +1,9 @@
 import pygame
 
-# Colore per il giocatore
-RED = (255, 0, 0)
+# --- Costanti del Giocatore ---
+PLAYER_WIDTH = 50
+PLAYER_HEIGHT = 80
+PLAYER_COLOR = (255, 0, 0) # Colore rosso
 
 class Player(pygame.sprite.Sprite):
     """
@@ -12,11 +14,9 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         # --- Aspetto del Giocatore ---
-        # Crea l'immagine del giocatore.
-        # Per ora, è un semplice rettangolo.
-        # In futuro, qui caricheremo un'immagine.
-        self.image = pygame.Surface([50, 80]) # Larghezza 50, Altezza 80
-        self.image.fill(RED)
+        # Crea l'immagine del giocatore usando le costanti definite sopra.
+        self.image = pygame.Surface([PLAYER_WIDTH, PLAYER_HEIGHT])
+        self.image.fill(PLAYER_COLOR)
 
         # --- Posizione e Rettangolo ("Hitbox") ---
         # Pygame usa gli oggetti Rect per gestire la posizione e le collisioni.
