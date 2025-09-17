@@ -1,9 +1,19 @@
 import pygame
+import os
 
 # --- Costanti del Giocatore ---
 PLAYER_WIDTH = 50
 PLAYER_HEIGHT = 80
-PLAYER_COLOR = (255, 0, 0) # Colore rosso
+# Il colore non è più necessario, ma lo lasciamo per riferimento
+# PLAYER_COLOR = (255, 0, 0)
+
+# --- Percorsi per gli Asset ---
+# __file__ è il percorso di questo file (player.py)
+# os.path.dirname(__file__) è la cartella 'src'
+# os.path.join(...) costruisce un percorso sicuro per ogni sistema operativo
+assets_folder = os.path.join(os.path.dirname(__file__), '..', 'assets')
+player_spritesheet_path = os.path.join(assets_folder, 'car_spritesheet.png')
+
 
 class Player(pygame.sprite.Sprite):
     """
@@ -14,12 +24,20 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         # --- Aspetto del Giocatore ---
-        # Crea l'immagine del giocatore usando le costanti definite sopra.
-        self.image = pygame.Surface([PLAYER_WIDTH, PLAYER_HEIGHT])
-        self.image.fill(PLAYER_COLOR)
+        # Carichiamo l'intero foglio di sprite
+        self.spritesheet = pygame.image.load(player_spritesheet_path).convert_alpha()
+
+        # Estraiamo un'immagine specifica dal foglio di sprite
+        # Usiamo .subsurface(pygame.Rect(x, y, larghezza, altezza))
+        # Le coordinate (x, y) sono il punto in alto a sinistra dell'immagine desiderata
+        # Queste coordinate sono state trovate per tentativi ed errori per isolare un'auto rossa
+        car_image_rect = pygame.Rect(130, 700, 150, 250)
+        self.image_original = self.spritesheet.subsurface(car_image_rect)
+
+        # Scaliamo l'immagine estratta alle dimensioni del nostro giocatore
+        self.image = pygame.transform.scale(self.image_original, (PLAYER_WIDTH, PLAYER_HEIGHT))
 
         # --- Posizione e Rettangolo ("Hitbox") ---
-        # Pygame usa gli oggetti Rect per gestire la posizione e le collisioni.
         self.rect = self.image.get_rect()
 
         # Salviamo le dimensioni dello schermo per non far uscire il giocatore.
@@ -31,7 +49,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.bottom = screen_height - 40 # Un po' staccato dal fondo
 
         # --- Movimento ---
-        # La velocità iniziale del giocatore è 0.
         self.speed_x = 0
 
     def update(self):
