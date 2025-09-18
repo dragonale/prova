@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.image_original = self.spritesheet.subsurface(car_image_rect)
 
         # Ruotiamo l'immagine originale per farla puntare verso l'alto
-        rotated_image = pygame.transform.rotate(self.image_original, 90)
+        rotated_image = pygame.transform.rotate(self.image_original, -90)
         # Ora scaliamo l'immagine ruotata alle dimensioni finali del giocatore
         self.image = pygame.transform.scale(rotated_image, (PLAYER_WIDTH, PLAYER_HEIGHT))
 
